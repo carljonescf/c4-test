@@ -1,7 +1,7 @@
-package uk.ac.cf.spring.c4checker.test;
+package uk.ac.cf.spring.c4checker.test.driving;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import uk.ac.cf.spring.c4checker.test.core.TestService;
 
 /**
  * Controller for the test service.

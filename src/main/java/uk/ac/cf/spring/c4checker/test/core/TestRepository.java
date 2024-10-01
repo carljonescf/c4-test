@@ -1,4 +1,4 @@
-package uk.ac.cf.spring.c4checker.test;
+package uk.ac.cf.spring.c4checker.test.core;
 
 /**
  * Repository for the test service.

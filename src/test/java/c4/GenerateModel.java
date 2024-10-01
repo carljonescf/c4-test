@@ -58,11 +58,11 @@ public class GenerateModel {
                 .fromSource("src/main/java")
 
                 //find repositories by annotation.
-               .withStrategy(
+/*               .withStrategy(
                         new ComponentFinderStrategyBuilder()
                                 .matchedBy(new AnnotationTypeMatcher("org.springframework.stereotype.Repository"))
                                 .build()
-                )
+                )*/
                 //find repositories by suffix.
                 .withStrategy(
                         new ComponentFinderStrategyBuilder()
@@ -73,11 +73,13 @@ public class GenerateModel {
                                 .build()
                 )
                 //find services by annotation.
-                .withStrategy(
+/*                .withStrategy(
                         new ComponentFinderStrategyBuilder()
                                 .matchedBy(new AnnotationTypeMatcher("org.springframework.stereotype.Service"))
+                                .supportedBy(new AllTypesUnderPackageSupportingTypesStrategy())
+
                                 .build()
-                )
+                )*/
                 //find services by suffix
                 .withStrategy(
                         new ComponentFinderStrategyBuilder()
@@ -91,7 +93,7 @@ public class GenerateModel {
                         new ComponentFinderStrategyBuilder()
                                 .matchedBy(new AnnotationTypeMatcher("org.springframework.stereotype.Controller"))
                                 .withTechnology("Spring MVC Controller")
-                                .supportedBy(new AllReferencedTypesInPackageSupportingTypesStrategy())
+                                .supportedBy(new AllTypesUnderPackageSupportingTypesStrategy())
                                 .forEach((component -> {
                                     owner.uses(component, "uses");
                                     component.addTags(component.getTechnology());

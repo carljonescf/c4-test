@@ -2,6 +2,7 @@ package c4;
 
 import com.structurizr.Workspace;
 import com.structurizr.api.StructurizrClient;
+import com.structurizr.api.WorkspaceApiClient;
 import com.structurizr.component.ComponentFinder;
 import com.structurizr.component.ComponentFinderBuilder;
 import com.structurizr.component.ComponentFinderStrategyBuilder;
@@ -178,9 +179,9 @@ public class GenerateModel {
 
         //System.setProperty("jdk.tls.client.protocols","TLSv1,TLSv1.1,TLSv1.2");
 
+        WorkspaceApiClient client = new WorkspaceApiClient(API_KEY, API_SECRET);
+        client.putWorkspace(WORKSPACE_ID, workspace);
 
-        StructurizrClient structurizrClient = new StructurizrClient(API_KEY, API_SECRET);
-        structurizrClient.putWorkspace(WORKSPACE_ID, workspace);
     }
 
 

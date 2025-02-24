@@ -1,7 +1,6 @@
-package uk.ac.cf.spring.c4checker.test.driven;
+package uk.ac.cf.spring.c4checker.test;
 
 import org.springframework.stereotype.Repository;
-import uk.ac.cf.spring.c4checker.test.core.TestRepository;
 
 @Repository
 public class TestRepositoryImpl implements TestRepository {

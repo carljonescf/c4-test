@@ -36,19 +36,12 @@ public class GenerateModel {
         // create the basic model (the stuff we can't get from the code)
         SoftwareSystem lotsOfSpam = model.addSoftwareSystem("Lots of Spam", "Online takeaway of Spam, Spam, Spam and more Spam");
         Person owner = model.addPerson("Takeaway Owner", "  A person who plans the menu.");
-
-
-
         owner.uses(lotsOfSpam, "Uses");
-
-
-
         Container webApplication = lotsOfSpam.addContainer(
                 "Spring Boot Application", "The web application", "Embedded web container.  Tomcat 7.0");
         Container relationalDatabase = lotsOfSpam.addContainer(
                 "Relational Database", "Stores information regarding the products.", "MySQL");
         owner.uses(webApplication, "Uses", "HTTP");
-
 
         webApplication.uses(relationalDatabase, "Reads from and writes to", "JDBC, port 3306");
 
@@ -57,48 +50,41 @@ public class GenerateModel {
                 .fromClasses("build/libs/C4-checker-0.0.1-SNAPSHOT.jar")
                 .fromSource("src/main/java")
 
-                //find repositories by annotation.
-/*               .withStrategy(
-                        new ComponentFinderStrategyBuilder()
-                                .matchedBy(new AnnotationTypeMatcher("org.springframework.stereotype.Repository"))
-                                .build()
-                )*/
                 //find repositories by suffix.
                 .withStrategy(
                         new ComponentFinderStrategyBuilder()
                                 .matchedBy(new NameSuffixTypeMatcher("Repository"))
                                 .supportedBy(new ImplementationWithSuffixSupportingTypesStrategy  ("Impl"))
-                                .forEach(component -> component.uses(relationalDatabase, "Reads from and writes to"))
                                 .withTechnology("Spring Data Repository")
+                                .forEach((component -> {
+                                        component.uses(relationalDatabase, "Reads from and write to");
+                                        component.addTags(component.getTechnology());
+
+                                }))
                                 .build()
                 )
-                //find services by annotation.
-/*                .withStrategy(
-                        new ComponentFinderStrategyBuilder()
-                                .matchedBy(new AnnotationTypeMatcher("org.springframework.stereotype.Service"))
-                                .supportedBy(new AllTypesUnderPackageSupportingTypesStrategy())
 
-                                .build()
-                )*/
                 //find services by suffix
                 .withStrategy(
                         new ComponentFinderStrategyBuilder()
                                 .matchedBy(new NameSuffixTypeMatcher("Service"))
+                                .withTechnology("Spring Service")
                                 .supportedBy(new ImplementationWithSuffixSupportingTypesStrategy  ("Impl"))
+                                .forEach((component -> {
+                                    component.addTags(component.getTechnology());
+                                }))
                                 .build()
                 )
 
                 //find controllers by annotation
                 .withStrategy(
                         new ComponentFinderStrategyBuilder()
-                                .matchedBy(new AnnotationTypeMatcher("org.springframework.stereotype.Controller"))
+                                .matchedBy(new NameSuffixTypeMatcher("Controller"))
                                 .withTechnology("Spring MVC Controller")
-                                .supportedBy(new AllTypesUnderPackageSupportingTypesStrategy())
                                 .forEach((component -> {
                                     owner.uses(component, "uses");
                                     component.addTags(component.getTechnology());
                                 }))
-
                                 .build()
                 )
                 .build().run();
@@ -165,11 +151,11 @@ public class GenerateModel {
         styles.addElementStyle(Tags.CONTAINER).background("#91D366").color("#ffffff");
         styles.addElementStyle("Database").shape(Shape.Cylinder);
 
-/*        styles.addElementStyle("Spring REST Controller").background("#D4FFC0").color("#000000");
+        styles.addElementStyle("Spring REST Controller").background("#D4FFC0").color("#000000");
 
         styles.addElementStyle("Spring MVC Controller").background("#D4F3C0").color("#000000");
         styles.addElementStyle("Spring Service").background("#6CB33E").color("#000000");
-        styles.addElementStyle("Spring Repository").background("#95D46C").color("#000000");*/
+        styles.addElementStyle("Spring Data Repository").background("#95D46C").color("#000000");
 
 
         // add ADRs
@@ -185,6 +171,8 @@ public class GenerateModel {
         client.putWorkspace(WORKSPACE_ID, workspace);
 
     }
+
+
 
 
 }

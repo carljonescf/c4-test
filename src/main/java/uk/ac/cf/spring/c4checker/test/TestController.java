@@ -1,7 +1,6 @@
-package uk.ac.cf.spring.c4checker.test.driving;
+package uk.ac.cf.spring.c4checker.test;
 
 import org.springframework.stereotype.Controller;
-import uk.ac.cf.spring.c4checker.test.core.TestService;
 
 /**
  * Controller for the test service.
